@@ -11,7 +11,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property string $name
  * @property int $amount
  */
-class Item extends JsonResource
+class ItemResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

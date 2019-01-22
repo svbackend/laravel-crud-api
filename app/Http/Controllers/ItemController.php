@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ItemCollection;
 use App\Item;
-use App\Http\Resources\Item as ItemResource;
+use App\Http\Resources\ItemResource;
+use App\Http\Resources\ItemCollectionResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -12,7 +12,7 @@ class ItemController extends Controller
 {
     public function index(): JsonResponse
     {
-        return response()->json(new ItemCollection(Item::paginate()));
+        return response()->json(new ItemCollectionResource(Item::paginate()));
     }
 
     public function show(Item $item): JsonResponse
