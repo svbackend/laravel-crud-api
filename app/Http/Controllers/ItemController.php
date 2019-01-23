@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\Item\Amount;
+use App\Filters\RequestFilter;
 use App\Item;
 use App\Http\Resources\ItemResource;
 use App\Http\Resources\ItemCollectionResource;
@@ -10,9 +12,15 @@ use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        return response()->json(new ItemCollectionResource(Item::paginate()));
+        $items = Item::query();
+
+        $filteredItems = (new RequestFilter($request))
+            ->addFilter(new Amount())
+            ->buildFilter($items);
+
+        return response()->json(new ItemCollectionResource($filteredItems->paginate()));
     }
 
     public function show(Item $item): JsonResponse
