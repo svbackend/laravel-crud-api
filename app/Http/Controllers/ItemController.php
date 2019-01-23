@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Filters\Item\Amount;
+use App\Filters\Item\Name;
 use App\Filters\RequestFilter;
+use App\Http\Requests\StoreItemRequest;
+use App\Http\Requests\UpdateItemRequest;
 use App\Item;
 use App\Http\Resources\ItemResource;
 use App\Http\Resources\ItemCollectionResource;
@@ -18,6 +21,7 @@ class ItemController extends Controller
 
         $filteredItems = (new RequestFilter($request))
             ->addFilter(new Amount())
+            ->addFilter(new Name())
             ->buildFilter($items);
 
         return response()->json(new ItemCollectionResource($filteredItems->paginate()));
@@ -28,14 +32,14 @@ class ItemController extends Controller
         return response()->json(new ItemResource($item));
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(StoreItemRequest $request): JsonResponse
     {
         $item = Item::create($request->all());
 
         return response()->json(new ItemResource($item), 201);
     }
 
-    public function update(Request $request, Item $item): JsonResponse
+    public function update(UpdateItemRequest $request, Item $item): JsonResponse
     {
         $item->update($request->all());
 
